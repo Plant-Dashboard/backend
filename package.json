@@ -1,0 +1,30 @@
+{
+  "name": "plant-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Node/express backend with MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Plant-Dashboard/backend.git"
+  },
+  "author": "Bryan Borgesano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Plant-Dashboard/backend/issues"
+  },
+  "homepage": "https://github.com/Plant-Dashboard/backend#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.17",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
