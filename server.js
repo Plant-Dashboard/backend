@@ -3,17 +3,24 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
+const helmet = require("helmet");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const xss = require("xss-clean");
+const path = require("path");
+const mongoSanitize = require("express-mongo-sanitize");
 const cookieParser = require("cookie-parser");
 
 //Load env vars
 dotenv.config({path: "./config/config.env"});
 
+//Connect to database
+connectDB();
+
 //Route files
 const readings = require("./routes/readings");
 const auth = require("./routes/auth");
-
-//Connect to database
-connectDB();
 
 const app = express();
 
@@ -27,6 +34,31 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+//Sanitive data
+app.use(mongoSanitize());
+
+//Set security headers
+app.use(helmet());
+
+//Prevent xss attacks
+app.use(xss());
+
+//Rate Limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, //10 minutes
+  max: 100,
+});
+app.use(limiter);
+
+//Enable CORS
+app.use(cors());
+
+// Prevent http param pollution
+app.use(hpp());
+
+//Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 //Mount routes
 app.use("/api/v1/readings", readings);
