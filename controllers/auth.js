@@ -3,6 +3,19 @@ const crypto = require("crypto");
 const asyncHandler = require("../middleware/async");
 const ErrorReponse = require("../utils/errorResponse");
 
+//@desc    Check if the password is correct for camera access
+//@route   POST /api/v1/auth/camera
+//@access  Public
+exports.checkPassword = asyncHandler(async (req, res, next) => {
+  const {password} = req.body;
+  console.log(password);
+  if (password !== process.env.CAMERA_ACCESS) {
+    return next(new ErrorReponse("Invalid password", 401));
+  } else {
+    res.status(200).json({allowAccess: true});
+  }
+});
+
 //@desc    Register user
 //@route   POST /api/v1/auth/register
 //@access  Public
