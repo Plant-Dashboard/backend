@@ -8,7 +8,7 @@ const ErrorReponse = require("../utils/errorResponse");
 //@access  Public
 exports.checkPassword = asyncHandler(async (req, res, next) => {
   const {password} = req.body;
-  console.log(password);
+
   if (password !== process.env.CAMERA_ACCESS) {
     return next(new ErrorReponse("Invalid password", 401));
   } else {
